@@ -2005,6 +2005,8 @@
     <Content Include="Views\Country\Index.cshtml" />
     <Content Include="Views\Shared\Partials\_LeftNavbar.cshtml" />
     <Content Include="Views\Shared\Partials\_TopNav.cshtml" />
+    <Content Include="Views\Country\New.cshtml" />
+    <Content Include="Views\Country\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

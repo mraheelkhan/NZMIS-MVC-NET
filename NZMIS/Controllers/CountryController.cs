@@ -24,21 +24,77 @@ namespace NZMIS.Controllers
         // GET: Country
         public ActionResult Index()
         {
+            ViewBag.BreadCrumb = "Country";
+            ViewBag.Function = "List";
             var countries  = _context.Country.ToList();
 
             //return View();
             // return Json(countries, JsonRequestBehavior.AllowGet);
             return View("Index", countries);
-        }
+        }   
 
         public ActionResult New(Country country)
         {
+            ViewBag.BreadCrumb = "Country";
+            ViewBag.Function = "New";
             return View("New");
         }
 
-        public ActionResult Test()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Store(Country country)
         {
-            return Content("TEsting content here");
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Error = "Invalid information";
+                return View("New");
+            }
+
+            _context.Country.Add(country);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Country");
+        }
+        public ActionResult Edit(int Id)
+        {
+            ViewBag.BreadCrumb = "Country";
+            ViewBag.Function = "Edit";
+            var country = _context.Country.SingleOrDefault(c => c.ID == Id);
+            if (country == null)
+                return HttpNotFound();
+            return View(country);
+        }
+
+        public ActionResult Update(Country country)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var CountryInDb = _context.Country.Single(c => c.ID == country.ID);
+            CountryInDb.CountryName = country.CountryName;
+            CountryInDb.CountryCode = country.CountryCode;
+            CountryInDb.ISO3166_1 = country.ISO3166_1;
+            CountryInDb.IsDefault = country.IsDefault;
+
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Country");
+        }
+
+        public ActionResult Destroy(int Id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
+            var countryInDb = _context.Country.Single(m => m.ID == Id);
+            if (countryInDb == null)
+                return HttpNotFound();
+            _context.Country.Remove(countryInDb);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Country");
         }
     }
 }
