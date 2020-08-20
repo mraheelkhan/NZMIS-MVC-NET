@@ -21,6 +21,7 @@ namespace NZMIS.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Country> Country { get; set; }
+        public DbSet<State> State { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
