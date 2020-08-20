@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using NZMIS.Models;
 using System.Data.SqlClient;
 using System.Data.Entity;
+using NZMIS.ViewModels;
 
 namespace NZMIS.Controllers
 {
@@ -27,10 +28,18 @@ namespace NZMIS.Controllers
             ViewBag.BreadCrumb = "Country";
             ViewBag.Function = "List";
             var countries  = _context.Country.ToList();
+            var states = _context.State.Include(c => c.Country).ToList();
+            var cities = _context.Cities.Where(c => c.StateID == 5).ToList();
 
+            var viewModel = new CountryStateCityViewModel
+            {
+                Country = countries,
+                State = states,
+                City = cities
+            };
             //return View();
             // return Json(countries, JsonRequestBehavior.AllowGet);
-            return View("Index", countries);
+            return View("Index", viewModel);
         }   
 
         public ActionResult New(Country country)

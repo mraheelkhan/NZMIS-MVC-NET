@@ -1,8 +1,77 @@
-﻿@model List<NZMIS.Models.Country>
+﻿@model NZMIS.ViewModels.CountryStateCityViewModel
 @{
     ViewBag.Title = "Countries";
 }
 
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card card-info collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">States - QuickAction</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body" style="display: none;">
+                    <ul>
+                        @foreach (var state in Model.State)
+                        {
+                            <li>
+                                @Html.ActionLink(state.StateName + " - " + state.Country.CountryName, "Detail", "State", new { state.ID }, null)
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <div class="col-md-3">
+            <div class="card card-info collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">States - QuickAction</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body" style="display: none;">
+                    
+                    <select id="state_id" class="form-control select2 mb-3" style="width: 100%;">
+                        <option>Select State to load cities</option>
+                        @foreach (var state in Model.State)
+                        {
+                            <option value="@state.ID"> @state.StateName </option>
+                        }
+
+                    </select>
+
+                    <ul id="citylist">
+                        @foreach (var city in Model.City)
+                        {
+                        <li>
+                            @Html.ActionLink(city.CityName + " - " + city.State.StateName, "Detail", "State", new { city.ID }, null)
+                        </li>
+                        }
+                    </ul>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -33,7 +102,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach (var country in Model)
+                    @foreach (var country in Model.Country)
                     {
                         <tr>
                             <td>@country.ID</td>
@@ -41,13 +110,9 @@
                             <td>@country.CountryCode</td>
                             <td>@country.ISO3166_1</td>
                             <td>
-                                
-                                <a href="Country/Edit/@country.ID" class="btn btn-info btn-xs">
-                                    <i class="fa fa-edit"></i>
-                                </a>
-                                <a href="Country/Destroy/@country.ID" class="btn btn-danger btn-xs">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                @Html.ActionLink(" ", "Edit", new { country.ID }, new { @class = "btn btn-info btn-sm fa fa-edit" })
+
+                                @Html.ActionLink(" ", "Destroy", new { country.ID }, new { @class = "btn btn-danger btn-sm fa fa-trash" })
                             </td>
                         </tr>
                     }
@@ -63,6 +128,28 @@
     </div>
 </div>
 
+<script>
+    $(function() {
+        //Initialize Select2 Elements
+        $('.select2').select2();
 
+        $('.select2').on('select2:select',
+            function(e) {
+                var data = e.params.data.id;
+                console.log(data);
+
+                var citylist = $('#citylist');
+                var state_id = $('#state_id').val();
+                var url = "@Url.Action("CitiesByStateID","Cities")/" + state_id;
+
+                fetch(url).then(function(response) {
+                    return response.json();
+                }).then(function(body) {
+
+                    console.log(body);
+                });
+            });
+    });
+</script>
 
 

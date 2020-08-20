@@ -13,5 +13,10 @@ namespace NZMIS.Controllers
         {
             return Content("hahahaha");
         }
+
+        public ActionResult Detail()
+        {
+            return Content("laskjdfl");
+        }
     }
 }
