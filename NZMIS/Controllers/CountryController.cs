@@ -27,6 +27,7 @@ namespace NZMIS.Controllers
         {
             ViewBag.BreadCrumb = "Country";
             ViewBag.Function = "List";
+            ViewBag.Success = "Country successfully added";
             var countries  = _context.Country.ToList();
             var states = _context.State.Include(c => c.Country).ToList();
             var cities = _context.Cities.Where(c => c.StateID == 5).ToList();
@@ -46,6 +47,8 @@ namespace NZMIS.Controllers
         {
             ViewBag.BreadCrumb = "Country";
             ViewBag.Function = "New";
+
+           
             return View("New");
         }
 
@@ -61,6 +64,8 @@ namespace NZMIS.Controllers
 
             _context.Country.Add(country);
             _context.SaveChanges();
+
+            ViewBag.Success = "Country successfully added";
             return RedirectToAction("Index", "Country");
         }
         public ActionResult Edit(int Id)

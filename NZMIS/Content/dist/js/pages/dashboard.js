@@ -1,31 +1,32 @@
 /*
+/*
  * Author: Abdullah A Almsaeed
  * Date: 4 Jan 2014
  * Description:
  *      This is a demo file used only for the main dashboard (index.html)
- **/
+ *#1#
 
 $(function () {
 
   'use strict'
 
   // Make the dashboard widgets sortable Using jquery UI
-  $('.connectedSortable').sortable({
+  /*$('.connectedSortable').sortable({
     placeholder         : 'sort-highlight',
     connectWith         : '.connectedSortable',
     handle              : '.card-header, .nav-tabs',
     forcePlaceholderSize: true,
     zIndex              : 999999
-  })
+  })#1#
   $('.connectedSortable .card-header, .connectedSortable .nav-tabs-custom').css('cursor', 'move')
 
   // jQuery UI sortable for the todo list
-  $('.todo-list').sortable({
+/*  $('.todo-list').sortable({
     placeholder         : 'sort-highlight',
     handle              : '.handle',
     forcePlaceholderSize: true,
     zIndex              : 999999
-  })
+  })#1#
 
   // bootstrap WYSIHTML5 - text editor
   $('.textarea').summernote()
@@ -45,7 +46,7 @@ $(function () {
     window.alert('You chose: ' + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
   })
 
-  /* jQueryKnob */
+  /* jQueryKnob #1#
   $('.knob').knob()
 
   // jvectormap data
@@ -108,7 +109,7 @@ $(function () {
     height: '250px'
   })
 
-  /* Chart.js Charts */
+  /* Chart.js Charts #1#
   // Sales chart
   var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d');
   //$('#revenue-chart').get(0).getContext('2d');
@@ -262,3 +263,61 @@ $(function () {
   )
 
 })
+*/
+//const axios = require('axios');
+
+var app = new Vue({
+    el: '#vueApp',
+    data() {
+        return {
+            display: 'Hello Vue!',
+            state_id: 0,
+            cities: null,
+            errored: false,
+            loading: false,
+            name: ''
+    }
+    },
+    methods: {
+        callApi() {
+            /*axios.get('/Cities/CitiesByStateID/' + this.state_id)
+                .then(function(response) {
+                    console.log(response.data[0]);
+                    this.cities = response.data;
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                });*/
+
+            axios
+                .get('/Cities/CitiesByStateID/' + this.state_id)
+                .then(response => {
+                    this.cities = response.data
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.errored = true
+                })
+                .finally(() => this.loading = false)
+        }
+    }
+});
+
+
+// Jquery goes here
+
+$(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2();
+//
+    $('.select2').on("select2:select",
+        function (e) {
+//            var data = e.params.data.id
+
+//            var citylist = $('#citylist');
+            var state_id = e.params.data.id;
+            app.state_id = state_id;
+            app.callApi();
+        }); 
+});
