@@ -31,12 +31,13 @@ namespace NZMIS.Controllers
             var countries  = _context.Country.ToList();
             var states = _context.State.Include(c => c.Country).ToList();
             var cities = _context.Cities.Where(c => c.StateID == 5).ToList();
-
+            var allcities = _context.Cities.ToList();
             var viewModel = new CountryStateCityViewModel
             {
                 Country = countries,
                 State = states,
-                City = cities
+                City = cities,
+                AllCities = allcities
             };
             //return View();
             // return Json(countries, JsonRequestBehavior.AllowGet);

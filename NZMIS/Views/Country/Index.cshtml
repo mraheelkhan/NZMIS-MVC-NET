@@ -4,79 +4,71 @@
 }
 
 
-    <div class="row">
-        <div class="col-md-3">
-            <div class="card card-info collapsed-card">
-                <div class="card-header">
-                    <h3 class="card-title">States - QuickAction</h3>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-info collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">States - QuickAction</h3>
 
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                    <!-- /.card-tools -->
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body" style="display: none;">
-                    <ul>
-                        @foreach (var state in Model.State)
-                        {
-                            <li>
-                                @Html.ActionLink(state.StateName + " - " + state.Country.CountryName, "Detail", "State", new { state.ID }, null)
-                            </li>
-                        }
-                    </ul>
-
-                </div>
-                <!-- /.card-body -->
+                <!-- /.card-tools -->
             </div>
-            <!-- /.card -->
-        </div>
-        <div class="col-md-3">
-            <div class="card card-info collapsed-card">
-                <div class="card-header">
-                    <h3 class="card-title">States - QuickAction {{ display }} </h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                            <i class="fas fa-arrow-down"></i>
-                        </button>
-                    </div>
-                    <!-- /.card-tools -->
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body" style="display: none;">
-                    
-                    <select id="state_id" class="form-control select2 mb-3" style="width: 100%;" v-on:change="onChange($event)" v-model="state_id">
-                        <option value="0">Select State to load cities</option>
-                        @foreach (var state in Model.State)
-                        {
-                            <option value="@state.ID"> @state.StateName </option>
-                        }
-
-                    </select>
-                    
-                    <input v-model="name" type="text"/>
-                    {{ name }}
-                    <ul id="citylist">
-                        <li v-for="city in cities">
-                            <a href="">{{ city.CityName }}</a>
-                        </li>
-                        @*@foreach (var city in Model.City)
-                        {
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                <ul>
+                    @foreach (var state in Model.State)
+                    {
                         <li>
-                            @Html.ActionLink(city.CityName + " - " + city.State.StateName, "Detail", "State", new { city.ID }, null)
+                            @Html.ActionLink(state.StateName + " - " + state.Country.CountryName, "Detail", "State", new { state.ID }, null)
                         </li>
-                        }*@
-                    </ul>
+                    }
+                </ul>
 
-                </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+            <!-- /.card-body -->
         </div>
+        <!-- /.card -->
     </div>
+    <div class="col-md-3">
+        <div class="card card-info collapsed-card">
+            <div class="card-header">
+                <h3 class="card-title">States - QuickAction {{ display }} </h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
+                <!-- /.card-tools -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body" style="display: none;">
+                    
+                <select id="state_id" class="form-control select2 mb-3" style="width: 100%;" v-on:change="onChange($event)" v-model="state_id">
+                    <option value="0">Select State to load cities</option>
+                    @foreach (var state in Model.State)
+                    {
+                        <option value="@state.ID"> @state.StateName </option>
+                    }
+                </select>
+
+                <ul id="citylist">
+                    <li v-for="city in cities">
+                        <a href="#" data-toggle="modal" data-target="#modal-default" v-on:click="openCityModal(city.ID)">{{ city.CityName }}</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -141,3 +133,83 @@
     </div>
 </div>
 
+<!-- Modals goes here -->
+<!-- Modal -->
+<div class="modal fade" id="modal-default" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Area in City</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+               
+                @using (Html.BeginForm("Store", "Country"))
+                {
+                    @Html.AntiForgeryToken()
+
+                     <select id="city_id" class="form-control mb-3" style="width: 100%;" value="40" v-model="city_id">
+                        <option value="">Select City to load Areas</option>
+                        @foreach (var city in Model.AllCities)
+                        {
+                            <option value="@city.ID"> @city.CityName </option>
+                        }
+                    </select>
+                    <div class="form-horizontal">
+
+                       
+                        <div class="form-group">
+                            Enter Area Name
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.CountryName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CountryName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ISO3166_1, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.ISO3166_1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ISO3166_1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CountryCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.CountryCode, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.CountryCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IsDefault, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.IsDefault)
+                                    @Html.ValidationMessageFor(model => model.IsDefault, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Create" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

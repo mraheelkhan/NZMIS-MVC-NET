@@ -20,7 +20,7 @@ namespace NZMIS
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Content/plugins/bootstrap/js/bootstrap.bundle.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
                 "~/Content/plugins/datatables/jquery.dataTables.js",
@@ -30,8 +30,7 @@ namespace NZMIS
                 "~/Content/plugins/sweetalert2/sweetalert2.js",
                 "~/Content/plugins/toastr/toastr.min.js",
                 "~/Content/dist/js/adminlte.js",
-                "~/Content/dist/js/demo.js",
-                "~/Content/dist/js/pages/dashboard.js"
+                "~/Content/dist/js/custom.js"
 
                 ));
 

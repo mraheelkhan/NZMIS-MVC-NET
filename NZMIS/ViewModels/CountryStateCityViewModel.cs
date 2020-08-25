@@ -14,5 +14,7 @@ namespace NZMIS.ViewModels
 
         public List<City> City { get; set; }
 
+        public List<City> AllCities { get; set; }
+
     }
 }
