@@ -35,5 +35,7 @@ namespace NZMIS.Models
         public DbSet<State> State { get; set; }
 
         public DbSet<City> Cities { get; set; }
+
+        public System.Data.Entity.DbSet<NZMIS.Models.Area> Areas { get; set; }
     }
 }

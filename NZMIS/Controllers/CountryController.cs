@@ -27,7 +27,7 @@ namespace NZMIS.Controllers
         {
             ViewBag.BreadCrumb = "Country";
             ViewBag.Function = "List";
-            ViewBag.Success = "Country successfully added";
+            // ViewBag.Success = "Country successfully added";
             var countries  = _context.Country.ToList();
             var states = _context.State.Include(c => c.Country).ToList();
             var cities = _context.Cities.Where(c => c.StateID == 5).ToList();

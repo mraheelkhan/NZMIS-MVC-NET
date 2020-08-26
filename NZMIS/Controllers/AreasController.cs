@@ -10,132 +10,126 @@ using NZMIS.Models;
 
 namespace NZMIS.Controllers
 {
-    public class CitiesController : Controller
+    public class AreasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Cities
+        // GET: Areas
         public ActionResult Index()
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "Areas";
             ViewBag.Function = "List";
-            var cities = db.Cities.Include(c => c.State);
-            return View(cities.ToList());
+            var areas = db.Areas.Include(a => a.City);
+            return View(areas.ToList());
         }
 
-        // GET: Cities/Details/5
+        // GET: Areas/Details/5
         public ActionResult Details(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "Areas";
             ViewBag.Function = "Detail";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            Area area = db.Areas.Find(id);
+            if (area == null)
             {
                 return HttpNotFound();
             }
-            return View(city);
+            return View(area);
         }
 
-        // GET: Cities/Create
+        // GET: Areas/Create
         public ActionResult Create()
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "Areas";
             ViewBag.Function = "Create";
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName");
+            ViewBag.CityID = new SelectList(db.Cities, "ID", "CityName");
             return View();
         }
 
-        // POST: Cities/Create
+        // POST: Areas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StateID,CityName,CityCode,ShortName,IsActive")] City city)
+        public ActionResult Create([Bind(Include = "ID,CityID,AreaName,AreaCode")] Area area)
         {
             if (ModelState.IsValid)
             {
-                db.Cities.Add(city);
+                db.Areas.Add(area);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CityID = new SelectList(db.Cities, "ID", "CityName", area.CityID);
+            return View(area);
         }
 
-        // GET: Cities/Edit/5
+        // GET: Areas/Edit/5
         public ActionResult Edit(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "Areas";
             ViewBag.Function = "Edit";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            Area area = db.Areas.Find(id);
+            if (area == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CityID = new SelectList(db.Cities, "ID", "CityName", area.CityID);
+            return View(area);
         }
 
-        // POST: Cities/Edit/5
+        // POST: Areas/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,StateID,CityName,CityCode,ShortName,IsActive")] City city)
+        public ActionResult Edit([Bind(Include = "ID,CityID,AreaName,AreaCode")] Area area)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(city).State = EntityState.Modified;
+                db.Entry(area).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CityID = new SelectList(db.Cities, "ID", "CityName", area.CityID);
+            return View(area);
         }
 
-        // GET: Cities/Delete/5
+        // GET: Areas/Delete/5
         public ActionResult Delete(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "Areas";
             ViewBag.Function = "Delete";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            Area area = db.Areas.Find(id);
+            if (area == null)
             {
                 return HttpNotFound();
             }
-            return View(city);
+            return View(area);
         }
 
-        // POST: Cities/Delete/5
+        // POST: Areas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            City city = db.Cities.Find(id);
-            db.Cities.Remove(city);
+            Area area = db.Areas.Find(id);
+            db.Areas.Remove(area);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
-        public ActionResult CitiesByStateID(int id)
-        {
-            var cities = db.Cities.Where(c => c.StateID == id).ToList();
-            return Json(cities, JsonRequestBehavior.AllowGet); 
-        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -10,132 +10,126 @@ using NZMIS.Models;
 
 namespace NZMIS.Controllers
 {
-    public class CitiesController : Controller
+    public class StatesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Cities
+        // GET: States
         public ActionResult Index()
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "States";
             ViewBag.Function = "List";
-            var cities = db.Cities.Include(c => c.State);
-            return View(cities.ToList());
+            var state = db.State.Include(s => s.Country);
+            return View(state.ToList());
         }
 
-        // GET: Cities/Details/5
+        // GET: States/Details/5
         public ActionResult Details(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "States";
             ViewBag.Function = "Detail";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            State state = db.State.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            return View(city);
+            return View(state);
         }
 
-        // GET: Cities/Create
+        // GET: States/Create
         public ActionResult Create()
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "States";
             ViewBag.Function = "Create";
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName");
+            ViewBag.CountryID = new SelectList(db.Country, "ID", "CountryName");
             return View();
         }
 
-        // POST: Cities/Create
+        // POST: States/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,StateID,CityName,CityCode,ShortName,IsActive")] City city)
+        public ActionResult Create([Bind(Include = "ID,CountryID,StateName,StateCode")] State state)
         {
             if (ModelState.IsValid)
             {
-                db.Cities.Add(city);
+                db.State.Add(state);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CountryID = new SelectList(db.Country, "ID", "CountryName", state.CountryID);
+            return View(state);
         }
 
-        // GET: Cities/Edit/5
+        // GET: States/Edit/5
         public ActionResult Edit(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "States";
             ViewBag.Function = "Edit";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            State state = db.State.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CountryID = new SelectList(db.Country, "ID", "CountryName", state.CountryID);
+            return View(state);
         }
 
-        // POST: Cities/Edit/5
+        // POST: States/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,StateID,CityName,CityCode,ShortName,IsActive")] City city)
+        public ActionResult Edit([Bind(Include = "ID,CountryID,StateName,StateCode")] State state)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(city).State = EntityState.Modified;
+                db.Entry(state).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StateID = new SelectList(db.State, "ID", "StateName", city.StateID);
-            return View(city);
+            ViewBag.CountryID = new SelectList(db.Country, "ID", "CountryName", state.CountryID);
+            return View(state);
         }
 
-        // GET: Cities/Delete/5
+        // GET: States/Delete/5
         public ActionResult Delete(long? id)
         {
-            ViewBag.BreadCrumb = "Cities";
+            ViewBag.BreadCrumb = "States";
             ViewBag.Function = "Delete";
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            City city = db.Cities.Find(id);
-            if (city == null)
+            State state = db.State.Find(id);
+            if (state == null)
             {
                 return HttpNotFound();
             }
-            return View(city);
+            return View(state);
         }
 
-        // POST: Cities/Delete/5
+        // POST: States/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            City city = db.Cities.Find(id);
-            db.Cities.Remove(city);
+            State state = db.State.Find(id);
+            db.State.Remove(state);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-
-        public ActionResult CitiesByStateID(int id)
-        {
-            var cities = db.Cities.Where(c => c.StateID == id).ToList();
-            return Json(cities, JsonRequestBehavior.AllowGet); 
-        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
