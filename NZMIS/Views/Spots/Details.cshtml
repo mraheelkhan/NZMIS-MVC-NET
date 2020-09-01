@@ -1,0 +1,60 @@
+﻿@model NZMIS.Models.Spot
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="card-title"> @ViewBag.Title </h3>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }, new { @class="btn btn-info"}) |
+                            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="col-md-12 mt-2">
+                    <div>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Area.AreaName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Area.AreaName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.SpotName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SpotName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.SpotCode)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SpotCode)
+                            </dd>
+
+                        </dl>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

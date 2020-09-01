@@ -1,0 +1,69 @@
+﻿@model NZMIS.Models.Spot
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="card-title"> @ViewBag.Title </h3>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-right">
+                            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="col-md-12 mt-2">
+                    <h3>Are you sure you want to delete this?</h3>
+                    @using (Html.BeginForm()) {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Delete" class="btn btn-danger" /> |
+                            @Html.ActionLink("Back to List", "Index")
+                        </div>
+                    }
+                    <div>
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Area.AreaName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Area.AreaName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.SpotName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SpotName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.SpotCode)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.SpotCode)
+                            </dd>
+
+                        </dl>
+
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
