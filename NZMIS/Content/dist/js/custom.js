@@ -12,7 +12,6 @@
     },
     methods: {
         callApi() {
-
             axios
                 .get('/Cities/CitiesByStateID/' + this.state_id)
                 .then(response => {

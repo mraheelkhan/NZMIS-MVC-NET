@@ -18,6 +18,13 @@ namespace NZMIS
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+
+            routes.MapRoute(
+            	name:  "Area.Index", 
+            	url: "CitiesArea/{action}/{id}",
+            	defaults: new { controller = "Area", action = "Index", id = UrlParameter.Optional }
+        	)
         }
     }
 }
